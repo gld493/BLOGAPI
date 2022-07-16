@@ -17,7 +17,7 @@ app.get('/api/posts', middleware.verify , getPosts)
 app.get('/api/posts/:id', middleware.verify , getPostById)
 app.post('/api/posts', middleware.verify , addPost)
 app.put('/api/posts/:id', editPost)
-app.delete('/api/posts/:id', middleware.verify , deletePost)
+app.delete('/api/posts/:id', middleware.verify , middleware.checkAccess(["admin"]), deletePost)
 
 //user enpoint
 app.post('/api/users', register)

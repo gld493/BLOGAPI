@@ -1,5 +1,6 @@
 const e = require('express')
 const jwt = require('jsonwebtoken')
+const { roles } = require('../controllers/roles')
 
 exports.verify = (req, res, next) => {
       const token = req.headers.authorization
@@ -13,6 +14,22 @@ exports.verify = (req, res, next) => {
           })
       }
 }
+
+exports.checkAccess = (permissions) => {
+    return async (req, res, next) => {
+     try {
+      const userRole = res.locals.user.role;
+         if (permissions.includes(userRole)) {
+             next();
+         } else {
+             return res.status(401).json("You don not have permission to perform this action.")
+         }  
+      
+     } catch (error) {
+      next(error)
+     }
+    }
+   }
 
 
   
