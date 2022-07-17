@@ -47,6 +47,11 @@ const deletePost = async (req, res) => {
             
         }
 
+        //make sure user can only delet their posts except admin
+        if ((post.user != res.locals.user._id) && (res.locals.user.role != "admin") ) {
+            return res.status(401).json("Controller: You don not have permission to perform this action. " )            
+        }
+
         await post.remove()
         res.status(200).json({ id: req.params.id, msg: "Post has been deleted." })
     } catch (err) {
