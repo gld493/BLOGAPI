@@ -24,25 +24,26 @@ exports.register = async (req, res) => {
     }
 
     try {
-       await bcrypt.hash(password, rounds, (error, hash) => {
-            if (error) res.status(500).json(error)
-            else {
-                 User.create({name: name, email: email, password: hash.toString(), role:role
-                }).then(user =>           
-                    res.status(200).json({
-                        message: "user successfully created.",
-                        _id: user.id,
-                        name: user.name,
-                        email: user.email,
-                        role: user.role,
-                        token: generateToken(user)
-                    })                            
-                )
+        bcrypt.hash(password, rounds, (error, hash) => {
+           if (error) res.status(500).json(error)
+           else {
+               User.create({
+                   name: name, email: email, password: hash.toString(), role: role
+               }).then(user =>                   
+                   res.status(200).json({
+                       message: "user successfully created.",
+                       _id: user.id,
+                       name: user.name,
+                       email: user.email,
+                       role: user.role,
+                       token: generateToken(user)                      
+                   })                    
+                ).then(user => res.locals.user = user.data)           
             }
         })            
     } catch (err) {
         res.status(401).json({
-            message: "User not successful created",
+            message: "Error in creating user account.",
             err: err.message,
         })     
     }

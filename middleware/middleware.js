@@ -2,6 +2,7 @@ const e = require('express')
 const jwt = require('jsonwebtoken')
 
 
+
 exports.verify = (req, res, next) => {
       const token = req.headers.authorization
       if (!token) res.status(403).json({error: "please provide a token"})
@@ -22,7 +23,7 @@ exports.checkAccess = (permissions) => {
          if (permissions.includes(userRole)) {
              next();
          } else {
-             return res.status(401).json("You don not have permission to perform this action.")
+             return res.status(401).json("You do not have permission to perform this action.")
          }  
       
      } catch (error) {
@@ -32,4 +33,4 @@ exports.checkAccess = (permissions) => {
    }
 
 
-  
+ 
